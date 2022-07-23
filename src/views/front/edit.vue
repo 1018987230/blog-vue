@@ -4,10 +4,10 @@
 
 <script lang="ts" setup>
 
-import { reactive } from "vue";
+import { reactive} from "vue"
 
 const form = reactive({
-  text:"xxxxx"
+  text:"aaaaaaaaaaa"
 })
 
 </script>
