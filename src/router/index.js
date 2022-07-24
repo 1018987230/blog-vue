@@ -7,7 +7,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'index',
-            component: () => import(/*webpackChunkName: "home" */ '../views/index.vue')
+            component: () => import(/*webpackChunkName: "home" */ '../views/front/index.vue')
         },
         {
             path: '/login',
@@ -19,7 +19,11 @@ const router = createRouter({
             name: 'edit',
             component: () => import(/*webpackChunkName: "home" */ '../views/front/edit.vue')
         },
-        
+        {
+            path: '/detail',
+            name: 'detail',
+            component: () => import(/*webpackChunkName: "home" */ '../views/front/detail.vue')
+        },
     ]
 })
 export default router
