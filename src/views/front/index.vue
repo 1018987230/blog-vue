@@ -6,8 +6,9 @@
 
         <!-- main -->
         <div style="width:100%; height:2000px;margin-top: ;">
-            <!-- 搜索框 -->
-            <div style="position: relative;width:60%; height:60px;margin-left: 20%; ;background-color: blanchedalmond;">
+            <!--  -->
+            <div style="position: relative;width:60%; height:60px;margin-left: 20%; ;background-color: blanchedalmond;display: flex;">
+                    <!-- 搜索框 -->
                     <el-input
                     v-model="blogTitle"
                     placeholder="Please input"
@@ -16,7 +17,7 @@
                     >
                         <template #prepend>
                             <el-select v-model="blogType" placeholder="Select" style="width: 115px;height:50px">
-                            <el-option label="Java" value="Java" />
+                            <el-option label="Java" value="Java"  />
                             <el-option label="Vue" value="Vue" />
                             <el-option label="Web3" value="Web3" />
                             </el-select>
@@ -25,6 +26,7 @@
                             <el-button :icon="Search" @click="findBtn" />
                         </template>
                     </el-input>
+                    <el-button @click="toEdit" type="primary">发布</el-button>
             </div>
 
             <!-- 主体 -->
@@ -131,14 +133,24 @@ const findBtn = () =>{
 }
 
 
+// 页面跳转
+
+const toEdit = () =>{
+    router.push({
+        path:"/edit"
+    })
+} 
+
+
 </script>
 
 
 <style lang="" scoped>
 
 .el-input__wrapper > .el-input__inner{
-    --el-input-inner-height: calc(var(--el-input-height, 38px) - -15px);
+    --el-input-inner-height: calc(var(--el-input-height, 38px) - -5px);
 }
+
 
 ._textDiv{
     position: relative;
