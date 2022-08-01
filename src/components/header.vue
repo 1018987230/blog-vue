@@ -8,7 +8,7 @@
     active-text-color="#ffd04b"
     @select="handleSelect"
   >
-    <el-menu-item index="1">首页</el-menu-item>
+    <el-menu-item index="1">BLOG</el-menu-item>
 
     <!-- <el-sub-menu index="2">
       <template #title>Workspace</template>
@@ -22,8 +22,8 @@
         <el-menu-item index="2-4-3">item three</el-menu-item>
       </el-sub-menu>
     </el-sub-menu>
-    <el-menu-item index="3" disabled>Info</el-menu-item>
-    <el-menu-item index="4">Orders</el-menu-item> -->
+    <el-menu-item index="3" disabled>Info</el-menu-item>-->
+    <el-menu-item index="2">NFT</el-menu-item> 
   </el-menu>
 </template>
 
@@ -31,10 +31,17 @@
 
 
 import { ref } from 'vue'
+import { useRouter} from "vue-router"
+
+const router = useRouter()
 
 const activeIndex = ref('1')
 const activeIndex2 = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
+  if(key == 2){
+    router.push('/nft')
+  }
 }
+
 </script>

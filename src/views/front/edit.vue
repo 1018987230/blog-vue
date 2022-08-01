@@ -26,7 +26,6 @@ import { textSave } from '../../utils/api.js'
 import { useRouter, useRoute} from  'vue-router'
 
 const router = useRouter()
-var msg = router.currentRoute.value.params
 
 const value = ref('')
 const options = [
@@ -45,17 +44,17 @@ const options = [
 ]
 
 let form = reactive({
-  blogId:msg.blogId,
+  blogId:"",
   blogTitle: "",
   blogContent: "",
   blogType: "Java"
 })
 // 能显示但是爆红
-form.blogId = msg.blogId
-form.blogTitle = msg.blogTitle
-form.blogType = msg.blogType
-form.blogContent = msg.blogContent
 
+
+
+import { ElMessage } from 'element-plus'
+//博客发布
 const save = () => {
   var data = {
     "blogId":form.blogId,
@@ -67,7 +66,18 @@ const save = () => {
   }
   console.log(data)
   textSave(data).then((res) => {
-    console.log("XX")
+    if(res.data.resultCode == 200){
+      ElMessage({
+        message: '博客发布成功啦！',
+        type: 'success'
+      })
+      router.push('/')
+    }else{
+      ElMessage({
+        message: '似乎发生了什么错误！，F12',
+        type: 'error'
+      })
+    }
   })
 }
 

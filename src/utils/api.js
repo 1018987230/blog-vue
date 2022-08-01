@@ -9,3 +9,10 @@ export function textSave(data){
 export function textFind(data){
     return http.post('/article/find', data)
 }
+
+// 文章修改
+export function textChange(data){
+    return http.post('/article/change', data)
+}
+
+// 获取总数

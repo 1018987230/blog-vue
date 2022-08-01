@@ -24,6 +24,12 @@ const router = createRouter({
             name: 'detail',
             component: () => import(/*webpackChunkName: "home" */ '../views/front/detail.vue')
         },
+
+        {
+            path: '/nft',
+            name: 'nft',
+            component: () => import(/*webpackChunkName: "home" */ '../views/front/nft.vue')
+        },
     ]
 })
 export default router
