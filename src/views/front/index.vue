@@ -1,32 +1,33 @@
 <template>
-    <!-- <Header></Header> -->
-    <div style="width:80%; ;height:1000px;margin-left:10%;background-color:rgb(110, 110, 110)">
+
+
+    <div style="width:80%;height:auto;max-width: 1200px;margin: 0 auto ;background-color:rgb(110, 110, 110);z-index:999">
         <!-- 导航头 -->
         <Header></Header>
 
         <!-- main -->
-        <div style="width:100%; height:2000px;margin-top: ;">
+        <div style="width:100%; height:auto;margin-top: ;">
             <!--  -->
-            <div style="position: relative;width:60%; height:60px;margin-left: 20%; ;background-color: blanchedalmond;display: flex;">
+            <div style="position: relative;width:100%; height:40px; ;background-color: rgb(110, 110, 110);display: flex;">
                     <!-- 搜索框 -->
                     <el-input
-                    v-model="blogTitle"
+                    v-model="currentTitle"
                     placeholder="Please input"
                     class="input-with-select"
-                    style="height:50px"
+                    style="height: 40px;width:60%;margin-left: 20%;"
                     >
                         <template #prepend>
-                            <el-select v-model="blogType" placeholder="Select" style="width: 115px;height:50px">
-                            <el-option label="Java" value="Java"  />
-                            <el-option label="Vue" value="Vue" />
-                            <el-option label="Web3" value="Web3" />
+                            <el-select v-model="currentType" placeholder="Select" style="width: 115px;display: inline-block;" size="large">
+                                <el-option label="Java" value="Java"  />
+                                <el-option label="Vue" value="Vue" />
+                                <el-option label="Web3" value="Web3" />
                             </el-select>
                         </template>
                         <template #append>
                             <el-button :icon="Search" @click="findBtn" />
                         </template>
                     </el-input>
-                    <el-button style="height:50px;width:80px" @click="toEdit" type="primary">发布</el-button>
+                    <el-button style="height:40px;width:80px" @click="toEdit" type="primary">发布</el-button>
             </div>
 
             <!-- 主体 -->
@@ -42,12 +43,12 @@
                             <div id="text" class="_textDiv" v-for="(data, index) in tableData" :key="index">
                                 <!-- 文章信息 -->
                                 <div class="_infoDiv" @click="handleClick2(data)" >
-                                    <div class="_title" style="" prop="title" >{{data.blogTitle}}</div>
+                                    <div class="_title" style="" prop="title" >{{data.articleTitle}}</div>
                                     <div class="_time" prop="create_time" > {{data.createTime}}</div>
                                 </div>
                                 <!-- 文章内容 -->
                                 <div class="_content">
-                                    {{data.blogContent}}
+                                    {{data.articleContent}}
                                 </div>
                             </div>
                         </div>
@@ -64,36 +65,37 @@
                     <el-tab-pane label="Vue" name="Vue">
                         <div style="position: relative; background-color: beige;width: 100%;height: auto;">
                             <div id="text" class="_textDiv" v-for="(data, index) in tableData" :key="index">
-                                <!-- 文章信息 -->
+                               
                                 <div class="_infoDiv" @click="handleClick2(data)" >
-                                    <div class="_title" style="" prop="title" >{{data.blogTitle}}</div>
+                                    <div class="_title" style="" prop="title" >{{data.articleTitle}}</div>
                                     <div class="_time" prop="create_time" > {{data.createTime}}</div>
                                 </div>
-                                <!-- 文章内容 -->
+                                
                                 <div class="_content">
-                                    {{data.blogContent}}
+                                    {{data.articleContent}}
                                 </div>
                             </div>
                         </div>
                         <el-pagination  
                             background 
                             layout="prev, pager, next" 
-                            :total="total" 
+                            :total="total"
                             :page-size="pageSize"
                             :current-page="currentPage"
                             @current-change="pageNum" />
                     </el-tab-pane>
+
                     <el-tab-pane label="Web3" name="Web3">
                         <div style="position: relative; background-color: beige;width: 100%;height: auto;">
                             <div id="text" class="_textDiv" v-for="(data, index) in tableData" :key="index">
                                 <!-- 文章信息 -->
                                 <div class="_infoDiv" @click="handleClick2(data)" >
-                                    <div class="_title" style="" prop="title" >{{data.blogTitle}}</div>
+                                    <div class="_title" style="" prop="title" >{{data.articleTitle}}</div>
                                     <div class="_time" prop="create_time" > {{data.createTime}}</div>
                                 </div>
                                 <!-- 文章内容 -->
                                 <div class="_content">
-                                    {{data.blogContent}}
+                                    {{data.articleContent}}
                                 </div>
                             </div>
                         </div>
@@ -122,33 +124,41 @@ import {textFind} from '../../utils/api.js'
 import {useRouter} from 'vue-router'
 
 
-const components = Header
+// const components = Header
 
 const router  = useRouter()
 
-const activeName = ref('first')
+const activeName = ref('Java')
 
 
 // 渲染返回数据
-let info = reactive({
+const info = reactive({
     tableData:[],
-    total:"",
+    total:20,
     pageSize:10,
     currentPage:1,
-    currentTab: "Java",
-    
+    currentType: "Java",
+    currentTitle:""
+})
+
+onMounted(() =>{
+    var data = {
+      "articleTitle":"",
+      "articleType": "Java",
+      "currentPage": info.currentPage
+    }
+    find(data)
 })
 
 //tab点击事件
 const handleClick = (tab: TabsPaneContext) => {
-  console.log(tab.paneName)
-  info.currentTab = tab.paneName
+  info.currentType = tab.paneName
   var data = {
-      "blogType": tab.paneName,
+      "articleTitle":"",
+      "articleType": tab.paneName,
       "currentPage": info.currentPage
   }
   find(data)
-  
 }
 
 //文章点击事件
@@ -157,48 +167,41 @@ const handleClick2 = (data) => {
        name: "detail",
        params: data
   })
-  console.log(info.total)
 }
-
 
 
 // 封装根据类型查找文章 or 直接点击tab查找
 const find = (data)=>{
     console.log(data)
     textFind(data).then((res)=>{
-        info.total = parseInt(res.data.message)
-        info.tableData = res.data.data
-        console.log(info.total)
+        info.total = parseInt(res.data.data.sum)
+        info.tableData = res.data.data.info
+        console.log(info.tableData)
     })
 } 
 
-// 分页和获取当前类型blog总数
+// 分页和获取当前类型article总数
 const pageNum = (data) =>{
     info.currentPage = data
     var data = {
-        "blogType": info.currentTab,
+        "articleTitle": info.currentTitle,
+        "articleType": info.currentType,
         "currentPage": info.currentPage
     }
     find(data)
 }
 
 
-// 搜索
-const form = reactive({
-    "blogTitle": "",
-    "blogType": ""
-})
-const { blogTitle, blogType} = toRefs(form)
-
-
-const {tableData,total,pageSize,currentPage} = toRefs(info)
+const {tableData,total,pageSize,currentPage,currentTitle, currentType} = toRefs(info)
 
 // 
 const findBtn = () =>{
     var data= {
-        "title": form.blogTitle,
-        "type": form.blogType,
+        "articleTitle": info.currentTitle,
+        "articleType": info.currentType,
+        "currentPage": info.currentPage
     }
+    activeName.value = info.currentType
     find(data)
 }
 
@@ -224,9 +227,9 @@ const toEdit = () =>{
 
 ._textDiv{
     position: relative;
-    background-color: white; 
+    background-color: #fafffc; 
     width: 100%;
-    height: 150px;
+    height: 130px;
     border-bottom:solid 1px black;
 }
 ._infoDiv{
@@ -234,7 +237,7 @@ const toEdit = () =>{
     position: relative;
     width: 100%; 
     height: 50px;
-    background-color: white;
+    background-color: #cfcccc66;
     border-bottom:1px solid #0000001f;
 }
  ._title{
@@ -251,7 +254,7 @@ const toEdit = () =>{
     margin-top: 14px;
 }
 ._content{
-    margin: 23px 10px;
+    margin: 11px 10px;
     font-size: 16px;
     position: absolute;
     overflow: hidden;

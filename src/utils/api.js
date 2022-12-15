@@ -15,4 +15,9 @@ export function textChange(data){
     return http.post('/article/change', data)
 }
 
+// 删除文章
+export function textRemove(data){
+    return http.get('/article/remove', data)
+}
+
 // 获取总数

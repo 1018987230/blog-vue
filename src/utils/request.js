@@ -3,7 +3,7 @@ import router from "../router";
 export function request(config) {
   // 创建axios的实例
   const instance = axios.create({
-    // baseURL: 'http://120.76.176.54:8080/api',
+    // baseURL: 'http://123.249.8.193:8080/api',
     baseURL: 'http://127.0.0.1:8080/api',
     timeout: 10000
   })
